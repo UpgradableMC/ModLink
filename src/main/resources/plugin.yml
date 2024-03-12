@@ -1,0 +1,4 @@
+name: ModLink
+version: '${project.version}'
+main: me.theabsolutepsychopath.modlink.ModLink
+api-version: '1.20'
