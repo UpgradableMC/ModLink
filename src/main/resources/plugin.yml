@@ -1,0 +1,10 @@
+name: ModLink
+version: '${project.version}'
+api-version: '1.20'
+main: org.psycho.Bot
+
+commands:
+  broadcast:
+    description: Announce a message to all players
+    usage: /broadcast <message>
+    aliases: [bc, announce]
