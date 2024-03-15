@@ -5,6 +5,20 @@ main: org.psycho.Bot
 
 commands:
   broadcast:
-    description: Announce a message to all players
+    description: Announce a message to all players!
     usage: /broadcast <message>
     aliases: [bc, announce]
+
+  staffchat:
+    description: Send a message to all staff members!
+    usage: /staffchat <message>
+    aliases: [sc]
+
+
+permissions:
+  modlink.staffchat:
+    description: Allows the player to use the staffchat command.
+    default: op
+  modlink.broadcast:
+    description: Allows the player to use the broadcast command.
+    default: op

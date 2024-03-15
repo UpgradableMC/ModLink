@@ -14,18 +14,16 @@ import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.channel.attribute.IGuildChannelContainer;
-import org.apache.logging.log4j.LoggingException;
+import org.psycho.Bot;
+import net.kyori.adventure.text.Component;
+
 import java.util.List;
+import java.util.Set;
 
 
 public class ChatInterface extends ListenerAdapter implements Listener {
 
-    private final JDA jda;
-
-    public ChatInterface(JDA jda) {
-        this.jda = jda;
-    }
+    private final Bot plugin = Bot.getInstance();
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
@@ -40,32 +38,7 @@ public class ChatInterface extends ListenerAdapter implements Listener {
             if (user.isBot()) {
                 return;
             }
-            // Check if the message has media
-            if (!attachments.isEmpty()) {
-                // The message has media
-                for (Attachment attachment : attachments) {
-                    if (attachment.isImage()) {
-                        // The attachment is an image
-                        Bukkit.broadcastMessage(user + " » " + messageraw + ChatColor.BOLD + "THIS MESSAGE CONTAINS AN IMAGE");
-                    } else if (attachment.isVideo()) {
-                        // The attachment is a video
-                    }
-                }
-            } else {
-                // The message does not have media
-                Bukkit.broadcastMessage(user + " » " + messageraw);
-            }
+            Bukkit.broadcastMessage(user.getName() + " » " + messageraw);
         }
-
     }
-
-    @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
-        String message = event.getMessage();
-
-        TextChannel channel = jda.getTextChannelById(1205269407350263889L);
-        channel.sendMessage(player + " » " + message).queue();
-    }
-
 }
