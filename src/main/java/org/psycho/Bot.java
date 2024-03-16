@@ -1,35 +1,38 @@
 package org.psycho;
 
 import java.net.http.WebSocket.Listener;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import lombok.Getter;
-import net.dv8tion.jda.api.JDA;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.psycho.TextHandlers.*;
-import org.bukkit.entity.Player;
 
 
 public final class Bot extends JavaPlugin implements Listener{
 
     public static final String Prefix = (ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Upgradable " + ChatColor.DARK_GRAY + "" + ChatColor.BOLD + " » ");
 
-    @Getter
     private DiscordManager discordManager;
     private static Bot plugin;
+
+    private final Map<Player, Boolean> staffChatStatus = new HashMap<>();
 
     public void onEnable() {
 
         plugin = this;
         this.discordManager = new DiscordManager();
 
-        Set<UUID> staffChatUsers = StaffChat.getStaffChatUsers();
 
         getServer().getPluginManager().registerEvents(new OnPlayerChat(), this);
-        getCommand("broadcast").setExecutor(new Announcements(this));
-        getCommand("staffchat").setExecutor(new StaffChat(this));
+
+        getCommand("staffchat").setExecutor(new StaffChatCmd(this));
+        getServer().getPluginManager().registerEvents(new StaffChat(this), this);
+
+        getCommand("broadcast").setExecutor(new Annoucments());
 
     }
     public static Bot getInstance() {
@@ -40,4 +43,29 @@ public final class Bot extends JavaPlugin implements Listener{
         // Plugin shutdown logic
         getLogger().info("Shutting down the bot.");
     }
+
+    public DiscordManager getDiscordManager() {
+        return discordManager;
+    }
+
+
+    public boolean toggleStaffChat(Player player) {
+        boolean newStatus = !isStaffChatEnabled(player);
+        staffChatStatus.put(player, newStatus);
+        return newStatus;
+    }
+
+    public boolean isStaffChatEnabled(Player player) {
+        return staffChatStatus.getOrDefault(player, false);
+    }
+
+    public void sendStaffChatMessage(Player sender, String message) {
+        for (Player staff : getServer().getOnlinePlayers()) {
+            if (isStaffChatEnabled(staff)) {
+                staff.sendMessage("[Staff] " + sender.getName() + ": " + message);
+            }
+        }
+    }
+
+
 }

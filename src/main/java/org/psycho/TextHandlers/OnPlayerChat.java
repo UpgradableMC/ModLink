@@ -1,28 +1,22 @@
 package org.psycho.TextHandlers;
 
-import lombok.Getter;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.psycho.Bot;
-import org.psycho.TextHandlers.StaffChat;
 
-import java.net.http.WebSocket;
 import java.util.Set;
 import java.util.UUID;
 
 import static org.bukkit.Bukkit.getServer;
-import static org.psycho.TextHandlers.StaffChat.staffChatUsers;
 
 public class OnPlayerChat implements Listener {
 
     private final Bot plugin = Bot.getInstance();
 
-    private final Set<UUID> usersStaffChat = StaffChat.getStaffChatUsers();
     public Player getPlayerByUuid(UUID uuid) {
         for(Player p : getServer().getOnlinePlayers())
             if(p.getUniqueId().equals(uuid)){
