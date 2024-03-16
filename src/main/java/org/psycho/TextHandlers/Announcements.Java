@@ -1,5 +1,6 @@
 package org.psycho.TextHandlers;
 
+import org.jetbrains.annotations.NotNull;
 import org.psycho.Bot;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,19 +15,19 @@ public class Announcements implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(final CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(final @NotNull CommandSender player, Command command, @NotNull String label, String[] args) {
         if (command.getName().equalsIgnoreCase("broadcast")) {
-            if (!sender.hasPermission("modlink.broadcast")) {
+            if (!player.hasPermission("modlink.broadcast")) {
             if (args.length > 0) {
                 String message = String.join(" ", args);
-                Bukkit.broadcastMessage(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Upgradable Announcements " + ChatColor.DARK_GRAY + "» " + message);
+                Bukkit.broadcastMessage(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Announcement " + ChatColor.DARK_GRAY + "» " + message);
                 return true;
             } else {
-                sender.sendMessage(ChatColor.RED + "You must provide a message to announce.");
+                player.sendMessage(ChatColor.RED + "You must provide a message to announce.");
                 return false;
             }
             } else {
-                sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+                player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
             }
         }
         return false;

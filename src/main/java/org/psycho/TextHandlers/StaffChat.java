@@ -15,11 +15,14 @@ import org.psycho.Bot;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
+
+import static org.bukkit.Bukkit.getServer;
 
 public class StaffChat implements CommandExecutor {
 
     @Getter
-    public static Set<Player> staffChatUsers = new HashSet<>();
+    public static Set<UUID> staffChatUsers = new HashSet<>();
 
     public static final String Prefix = (ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Upgradable " + ChatColor.DARK_GRAY + ChatColor.BOLD + " » ");
     private final Bot plugin;
@@ -31,13 +34,13 @@ public class StaffChat implements CommandExecutor {
         if (command.getName().equalsIgnoreCase("staffchat")) {
             if (sender instanceof Player player) {
                 if (player.hasPermission("modlink.StaffChat")) {
-                    if (staffChatUsers.contains(player)) {
+                    if (staffChatUsers.contains(player.getUniqueId())) {
                         // The player has staffchat on, so turn it off
-                        staffChatUsers.remove(player);
+                        staffChatUsers.remove(player.getUniqueId());
                         player.sendMessage(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Upgradable SC" + ChatColor.DARK_GRAY + ChatColor.BOLD + " » " + ChatColor.AQUA + "StaffChat has been turned OFF");
                     } else {
                         // The player has staffchat off, so turn it on
-                        staffChatUsers.add(player);
+                        staffChatUsers.add(player.getUniqueId());
                         player.sendMessage(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Upgradable SC" + ChatColor.DARK_GRAY + ChatColor.BOLD + " » " + ChatColor.AQUA + "StaffChat has been turned ON");
                     }
                     return true;
@@ -54,19 +57,24 @@ public class StaffChat implements CommandExecutor {
     }
 
     public boolean hasStaffChatOn(Player player) {
-        return staffChatUsers.contains(player);
+        return staffChatUsers.contains(player.getUniqueId());
     }
-
+    public Player getPlayerByUuid(UUID uuid) {
+        for(Player p : getServer().getOnlinePlayers())
+            if(p.getUniqueId().equals(uuid)){
+                return p;
+            } throw new IllegalArgumentException();
+    }
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player sender = event.getPlayer();
         String message = event.getMessage();
-        if (staffChatUsers.contains(sender)) {
+        if (staffChatUsers.contains(sender.getUniqueId())) {
             event.setCancelled(true);
         }
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.hasPermission("modlink.StaffChat")) {
-                if (staffChatUsers.contains(player)) {
+                if (staffChatUsers.contains(player.getUniqueId())) {
                     player.sendMessage(ChatColor.DARK_AQUA + "" + player + ChatColor.DARK_GRAY + ChatColor.BOLD + " » " + ChatColor.AQUA + message);
                 }
             }

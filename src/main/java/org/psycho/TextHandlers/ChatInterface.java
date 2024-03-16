@@ -19,11 +19,20 @@ import net.kyori.adventure.text.Component;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+
+import static org.bukkit.Bukkit.getServer;
 
 
 public class ChatInterface extends ListenerAdapter implements Listener {
 
     private final Bot plugin = Bot.getInstance();
+    public Player getPlayerByUuid(UUID uuid) {
+        for(Player p : getServer().getOnlinePlayers())
+            if(p.getUniqueId().equals(uuid)){
+                return p;
+            } throw new IllegalArgumentException();
+    }
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {

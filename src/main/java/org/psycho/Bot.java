@@ -2,6 +2,7 @@ package org.psycho;
 
 import java.net.http.WebSocket.Listener;
 import java.util.Set;
+import java.util.UUID;
 
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
@@ -24,7 +25,7 @@ public final class Bot extends JavaPlugin implements Listener{
         plugin = this;
         this.discordManager = new DiscordManager();
 
-        Set<Player> staffChatUsers = StaffChat.getStaffChatUsers();
+        Set<UUID> staffChatUsers = StaffChat.getStaffChatUsers();
 
         getServer().getPluginManager().registerEvents(new OnPlayerChat(), this);
         getCommand("broadcast").setExecutor(new Announcements(this));
