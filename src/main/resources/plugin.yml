@@ -12,6 +12,9 @@ commands:
     description: Send a message to all staff members!
     usage: /staffchat <message>
     aliases: [sc]
+  upgrade:
+    description: Upgrade your fishing rod to the next level!
+    usage: /upgrade
 permissions:
   modlink.staffchat:
     description: Allows the player to use the staffchat command.

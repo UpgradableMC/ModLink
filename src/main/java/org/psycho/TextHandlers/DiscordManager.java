@@ -11,18 +11,21 @@ import org.psycho.TextHandlers.*;
 
 
 import java.util.EnumSet;
+import java.util.Map;
 import java.util.Set;
 
 
 public class DiscordManager {
     private final Bot Instance = Bot.getInstance();
              private JDA jda;
-
-    public DiscordManager() {
+    private final Map<Player, Boolean> staffChatStatus;
+    public DiscordManager(Map<Player, Boolean> staffChatStatus) {
+        this.staffChatStatus = staffChatStatus;
         try {
             jda = JDABuilder.createLight("MTIwNjgzNzMxMjQwMzY3MzA4OA.GfOsQ5.iZ5aiUxj78nPO65_4qDUDyBJB3Nn9D8F4ewmwE")
                     .enableIntents(EnumSet.allOf(GatewayIntent.class))
                     .addEventListeners(new ChatInterface())
+                    .addEventListeners(new StaffChatInterface(staffChatStatus))
                     .build()
                     .awaitReady();
 

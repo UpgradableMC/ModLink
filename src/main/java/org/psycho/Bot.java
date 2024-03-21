@@ -6,9 +6,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.psycho.FunStuff.*;
 import org.psycho.TextHandlers.*;
 
 
@@ -24,14 +26,13 @@ public final class Bot extends JavaPlugin implements Listener{
     public void onEnable() {
 
         plugin = this;
-        this.discordManager = new DiscordManager();
-
-
+        this.discordManager = new DiscordManager(staffChatStatus);
         getServer().getPluginManager().registerEvents(new OnPlayerChat(), this);
 
         getCommand("staffchat").setExecutor(new StaffChatCmd(this));
         getServer().getPluginManager().registerEvents(new StaffChat(this), this);
-
+        getServer().getPluginManager().registerEvents(new UpgradeGUI(), this);
+        getCommand("upgrade").setExecutor(new UpgradeGUI());
         getCommand("broadcast").setExecutor(new Annoucments());
 
     }
@@ -62,9 +63,12 @@ public final class Bot extends JavaPlugin implements Listener{
     public void sendStaffChatMessage(Player sender, String message) {
         for (Player staff : getServer().getOnlinePlayers()) {
             if (isStaffChatEnabled(staff)) {
-                staff.sendMessage("[Staff] " + sender.getName() + ": " + message);
+                staff.sendMessage("[Staff] " + sender.getName() + " » " + message);
             }
         }
+        TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1168051592780587021L);
+        String playerName = sender.getName();
+        channel.sendMessage(ChatColor.stripColor(playerName) + " » " + message).queue();
     }
 
 

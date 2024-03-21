@@ -17,9 +17,7 @@ import net.dv8tion.jda.api.JDA;
 import org.psycho.Bot;
 import net.kyori.adventure.text.Component;
 
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -47,7 +45,7 @@ public class ChatInterface extends ListenerAdapter implements Listener {
             if (user.isBot()) {
                 return;
             }
-            Bukkit.broadcastMessage(user.getName() + " » " + messageraw);
+            Bukkit.broadcastMessage("Discord Link " + user.getName() + " » " + messageraw);
         }
     }
 }
