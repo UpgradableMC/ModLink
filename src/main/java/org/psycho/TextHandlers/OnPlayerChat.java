@@ -1,14 +1,14 @@
 package org.psycho.TextHandlers;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.*;
 import org.psycho.Bot;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,13 +28,10 @@ public class OnPlayerChat implements Listener {
             } throw new IllegalArgumentException();
     }
 
-    private final Map<Player, Boolean> staffChatStatus = new HashMap<>();
-    public boolean isStaffChatEnabled(Player player) {
-        return staffChatStatus.getOrDefault(player, false);
-    }
-
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
+        Bot bot = Bot.getInstance();
+        Map<Player, Boolean> staffChatStatus = bot.getStaffChatStatus();
         Player player = event.getPlayer();
         String message = event.getMessage();
         if (plugin.isStaffChatEnabled(event.getPlayer()) && event.getPlayer().hasPermission("staffchat.use")) {
@@ -42,12 +39,25 @@ public class OnPlayerChat implements Listener {
             String playername = player.getName();
             channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
         }
-        if (!plugin.isStaffChatEnabled(event.getPlayer()) && event.getPlayer().hasPermission("staffchat.use")) {
+        else if (!plugin.isStaffChatEnabled(event.getPlayer()) && !event.getPlayer().hasPermission("staffchat.use")) {
+            TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1205269407350263889L);
+            String playername = player.getName();
+            channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
+        } else if (event.getPlayer().hasPermission("staffchat.use") && message.startsWith("#")) {
+            message = message.substring(1);
+            if (message.startsWith(" ")) {
+                message = message.substring(1);
+            }
+            TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1168051592780587021L);
+            String playername = player.getName();
+            channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
+        } else {
             TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1205269407350263889L);
             String playername = player.getName();
             channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
         }
     }
+
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -58,7 +68,7 @@ public class OnPlayerChat implements Listener {
     }
 
     @EventHandler
-    public void onPlayerLeave(PlayerJoinEvent event) {
+    public void onPlayerLeave(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1205269407350263889L);
         String playername = player.getName();

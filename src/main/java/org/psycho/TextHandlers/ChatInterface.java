@@ -45,7 +45,7 @@ public class ChatInterface extends ListenerAdapter implements Listener {
             if (user.isBot()) {
                 return;
             }
-            Bukkit.broadcastMessage("Discord Link " + user.getName() + " » " + messageraw);
+            Bukkit.broadcastMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "DISCORD " + ChatColor.AQUA + user.getName() + ChatColor.DARK_GRAY + " » " + ChatColor.GRAY + messageraw);
         }
     }
 }

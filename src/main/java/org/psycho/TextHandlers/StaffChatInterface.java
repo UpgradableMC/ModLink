@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.psycho.Bot;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.apache.logging.log4j.LogManager.getLogger;
 import static org.bukkit.Bukkit.getServer;
 
 public class StaffChatInterface extends ListenerAdapter implements Listener {
@@ -48,8 +50,9 @@ public class StaffChatInterface extends ListenerAdapter implements Listener {
                 return;
             }
             for (Player staff : getServer().getOnlinePlayers()) {
-                if (isStaffChatEnabled(staff)) {
-                    staff.sendMessage("[Staff Discord] " + user.getName() + " » " + messageraw);
+                if (staff.hasPermission("staffchat.use")) {
+                    staff.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "DISCORD SC " + ChatColor.AQUA + user.getName() + ChatColor.DARK_GRAY + " » " + ChatColor.GRAY + messageraw);
+                    getLogger().info("DISCORD SC " + user.getName() + " » " + messageraw);
                 }
             }
         }
