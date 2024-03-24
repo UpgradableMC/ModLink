@@ -26,20 +26,21 @@ public class DiscordStaffChatWatcher extends ListenerAdapter implements Listener
         MessageChannelUnion channel = event.getChannel();
 
 
-        if (channel.getId().equals("1168051592780587021")) {
-            Message message = event.getMessage();
-            String messageraw = message.getContentRaw();
-            User user = message.getAuthor();
-            List<Message.Attachment> attachments = message.getAttachments();
-            if (user.isBot()) {
-                return;
-            }
-            for (Player staff : getServer().getOnlinePlayers()) {
-                if (staff.hasPermission("staffchat.use")) {
-                    staff.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "DISCORD SC " + ChatColor.AQUA + user.getName() + ChatColor.DARK_GRAY + " » " + ChatColor.GRAY + messageraw);
-                    getLogger().info("DISCORD SC " + user.getName() + " » " + messageraw);
-                }
-            }
+        if (!channel.getId().equals("1168051592780587021")) return;
+
+        Message message = event.getMessage();
+        String messageraw = message.getContentRaw();
+        User user = message.getAuthor();
+        List<Message.Attachment> attachments = message.getAttachments();
+
+        if (user.isBot()) return;
+
+        for (Player staff : getServer().getOnlinePlayers()) {
+            if (!staff.hasPermission("staffchat.use")) return;
+            staff.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "DISCORD SC " + ChatColor.AQUA + user.getName() + ChatColor.DARK_GRAY + " » " + ChatColor.GRAY + messageraw);
+            getLogger().info("DISCORD SC " + user.getName() + " » " + messageraw);
+
         }
+
     }
 }
