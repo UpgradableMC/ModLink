@@ -1,10 +1,17 @@
 package org.psycho.events.minecraft;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.psycho.Bot;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.apache.logging.log4j.LogManager.getLogger;
+import static org.bukkit.Bukkit.getServer;
 
 public class OnStaffChatUse implements Listener {
 
@@ -15,13 +22,30 @@ public class OnStaffChatUse implements Listener {
         this.plugin = plugin;
     }
 
+    private final Map<Player, Boolean> staffChatStatus = new HashMap<>();
+
+    public Map<Player, Boolean> getStaffChatStatus() {
+        return staffChatStatus;
+    }
+    public boolean isStaffChatEnabled(Player player) {
+        return staffChatStatus.getOrDefault(player, false);
+    }
+
+    public void sendStaffChatMessage(Player sender, String message) {
+        for (Player staff : getServer().getOnlinePlayers()) {
+            if (staff.hasPermission("staffchat.use")) {
+                staff.sendMessage(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "STAFF " + ChatColor.AQUA + sender.getName() + ChatColor.DARK_GRAY + " » " + ChatColor.GRAY + message);
+                getLogger().info("STAFF " + sender.getName() + " » " + message);
+            }
+        }
+    }
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
-        if (plugin.isStaffChatEnabled(event.getPlayer()) && event.getPlayer().hasPermission("staffchat.use")) {
+        if (isStaffChatEnabled(event.getPlayer()) && event.getPlayer().hasPermission("staffchat.use")) {
             event.setCancelled(true);
-            plugin.sendStaffChatMessage(event.getPlayer(), message);
+            sendStaffChatMessage(event.getPlayer(), message);
         }
         if (event.getPlayer().hasPermission("staffchat.use") && message.startsWith("#")) {
             event.setCancelled(true);
@@ -29,7 +53,7 @@ public class OnStaffChatUse implements Listener {
             if (message.startsWith(" ")) {
                 message = message.substring(1);
             }
-            plugin.sendStaffChatMessage(event.getPlayer(), message);
+            sendStaffChatMessage(event.getPlayer(), message);
         }
     }
 }

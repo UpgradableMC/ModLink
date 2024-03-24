@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 import org.psycho.Bot;
+import org.psycho.managers.StaffChatManager;
 
 
 import java.util.HashMap;
@@ -20,6 +21,10 @@ import static org.bukkit.Bukkit.getServer;
 public class OnPlayerChat implements Listener {
 
     private final Bot plugin = Bot.getInstance();
+
+
+
+    private StaffChatManager staffChatManager = StaffChatManager.isStaffChatEnabled();
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {

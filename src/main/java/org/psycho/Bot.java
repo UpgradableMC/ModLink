@@ -57,24 +57,4 @@ public final class Bot extends JavaPlugin implements Listener{
         return discordManager;
     }
 
-
-    public boolean toggleStaffChat(Player player) {
-        boolean newStatus = !isStaffChatEnabled(player);
-        staffChatStatus.put(player, newStatus);
-        return newStatus;
-    }
-
-    public boolean isStaffChatEnabled(Player player) {
-        return staffChatStatus.getOrDefault(player, false);
-    }
-
-    public void sendStaffChatMessage(Player sender, String message) {
-        for (Player staff : getServer().getOnlinePlayers()) {
-            if (staff.hasPermission("staffchat.use")) {
-                staff.sendMessage(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "STAFF " + ChatColor.AQUA + sender.getName() + ChatColor.DARK_GRAY + " » " + ChatColor.GRAY + message);
-                getLogger().info("STAFF " + sender.getName() + " » " + message);
-            }
-        }
-    }
-
 }
