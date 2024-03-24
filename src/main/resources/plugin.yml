@@ -1,4 +1,25 @@
 name: ModLink
-version: '${project.version}'
-main: me.theabsolutepsychopath.modlink.ModLink
+version: '1.0'
 api-version: '1.20'
+main: org.psycho.Bot
+depend: [PlaceholderAPI]
+commands:
+  broadcast:
+    description: Announce a message to all players!
+    usage: /broadcast <message>
+    aliases: [bc, announce]
+    executor: org.psycho.TextHandlers.Broadcast
+  staffchat:
+    description: Send a message to all staff members!
+    usage: /staffchat <message>
+    aliases: [sc]
+  upgrade:
+    description: Upgrade your fishing rod to the next level!
+    usage: /upgrade
+permissions:
+  modlink.staffchat:
+    description: Allows the player to use the staffchat command.
+    default: op
+  modlink.broadcast:
+    description: Allows the player to use the broadcast command.
+    default: op
