@@ -1,4 +1,4 @@
-package org.psycho.TextHandlers;
+package org.psycho.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class Annoucments implements CommandExecutor {
+public class AnnouncementCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {

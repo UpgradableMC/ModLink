@@ -1,4 +1,4 @@
-package org.psycho.TextHandlers;
+package org.psycho.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -6,11 +6,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.psycho.Bot;
 
-public class StaffChatCmd implements CommandExecutor {
+public class StaffChatCMD implements CommandExecutor {
 
     private final Bot plugin;
 
-    public StaffChatCmd(Bot plugin) {
+    public StaffChatCMD(Bot plugin) {
         this.plugin = plugin;
     }
 

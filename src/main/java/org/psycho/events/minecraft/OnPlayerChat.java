@@ -1,4 +1,4 @@
-package org.psycho.TextHandlers;
+package org.psycho.events.minecraft;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.bukkit.Bukkit;
@@ -20,13 +20,6 @@ import static org.bukkit.Bukkit.getServer;
 public class OnPlayerChat implements Listener {
 
     private final Bot plugin = Bot.getInstance();
-
-    public Player getPlayerByUuid(UUID uuid) {
-        for(Player p : getServer().getOnlinePlayers())
-            if(p.getUniqueId().equals(uuid)){
-                return p;
-            } throw new IllegalArgumentException();
-    }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
@@ -56,23 +49,6 @@ public class OnPlayerChat implements Listener {
             String playername = player.getName();
             channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
         }
-    }
-
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1205269407350263889L);
-        String playername = player.getName();
-        channel.sendMessage(ChatColor.stripColor(playername) + " has joined the server.").queue();
-    }
-
-    @EventHandler
-    public void onPlayerLeave(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1205269407350263889L);
-        String playername = player.getName();
-        channel.sendMessage(ChatColor.stripColor(playername) + " has left the server.").queue();
     }
 }
 

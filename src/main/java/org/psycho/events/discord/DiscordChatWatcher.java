@@ -1,28 +1,23 @@
-package org.psycho.TextHandlers;
+package org.psycho.events.discord;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.*;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.Message.Attachment;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.JDA;
 import org.psycho.Bot;
-import net.kyori.adventure.text.Component;
 
 import java.util.*;
 
 import static org.bukkit.Bukkit.getServer;
 
 
-public class ChatInterface extends ListenerAdapter implements Listener {
+public class DiscordChatWatcher extends ListenerAdapter implements Listener {
 
     private final Bot plugin = Bot.getInstance();
     public Player getPlayerByUuid(UUID uuid) {

@@ -1,20 +1,17 @@
-package org.psycho.TextHandlers;
+package org.psycho.events.minecraft;
 
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.psycho.Bot;
 
-public class StaffChat implements Listener {
+public class OnStaffChatUse implements Listener {
 
 
     private final Bot plugin;
 
-    public StaffChat(Bot plugin) {
+    public OnStaffChatUse(Bot plugin) {
         this.plugin = plugin;
     }
 

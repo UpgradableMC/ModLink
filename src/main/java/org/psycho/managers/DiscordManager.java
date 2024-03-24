@@ -1,18 +1,16 @@
-package org.psycho.TextHandlers;
+package org.psycho.managers;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.entity.Player;
 import org.psycho.Bot;
-import org.psycho.TextHandlers.*;
+import org.psycho.events.discord.DiscordChatWatcher;
+import org.psycho.events.discord.DiscordStaffChatWatcher;
 
 
 import java.util.EnumSet;
 import java.util.Map;
-import java.util.Set;
 
 
 public class DiscordManager {
@@ -24,8 +22,8 @@ public class DiscordManager {
         try {
             jda = JDABuilder.createLight("MTIwNjgzNzMxMjQwMzY3MzA4OA.GfOsQ5.iZ5aiUxj78nPO65_4qDUDyBJB3Nn9D8F4ewmwE")
                     .enableIntents(EnumSet.allOf(GatewayIntent.class))
-                    .addEventListeners(new ChatInterface())
-                    .addEventListeners(new StaffChatInterface(staffChatStatus))
+                    .addEventListeners(new DiscordChatWatcher())
+                    .addEventListeners(new DiscordStaffChatWatcher(staffChatStatus))
                     .build()
                     .awaitReady();
 

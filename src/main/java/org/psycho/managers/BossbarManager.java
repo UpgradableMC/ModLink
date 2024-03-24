@@ -1,4 +1,4 @@
-package org.psycho.FunStuff;
+package org.psycho.managers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -6,12 +6,11 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 import java.util.List;
-public class BossBarBar {
+public class BossbarManager {
     private double progress = 0.0;
     private int currentIndex = 0;
     private BossBar bossBar;
@@ -52,17 +51,7 @@ public class BossBarBar {
                 }
             }
         }.runTaskTimer(Bukkit.getPluginManager().getPlugin("ModLink"), 0, 1); // run every tick (20 ticks = 1 second)
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    bossBar.addPlayer(player);
-                }
-            }
-        }.runTaskTimer(Bukkit.getPluginManager().getPlugin("ModLink"), 0, 1200); // run every tick (20 ticks = 1 second)
-        }
-
+    }
 }
 
 

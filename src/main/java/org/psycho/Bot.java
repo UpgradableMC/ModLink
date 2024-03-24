@@ -3,18 +3,17 @@ package org.psycho;
 import java.net.http.WebSocket.Listener;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.psycho.FunStuff.*;
-import org.psycho.TextHandlers.*;
+import org.psycho.commands.AnnouncementCMD;
+import org.psycho.commands.StaffChatCMD;
+import org.psycho.events.minecraft.OnPlayerChat;
+import org.psycho.events.minecraft.OnStaffChatUse;
+import org.psycho.managers.BossbarManager;
+import org.psycho.managers.DiscordManager;
 
 
 public final class Bot extends JavaPlugin implements Listener{
@@ -35,23 +34,14 @@ public final class Bot extends JavaPlugin implements Listener{
         plugin = this;
         this.discordManager = new DiscordManager(staffChatStatus);
         getServer().getPluginManager().registerEvents(new OnPlayerChat(), this);
-        getCommand("staffchat").setExecutor(new StaffChatCmd(this));
-        getServer().getPluginManager().registerEvents(new StaffChat(this), this);
+        getCommand("staffchat").setExecutor(new StaffChatCMD(this));
+        getServer().getPluginManager().registerEvents(new OnStaffChatUse(this), this);
         getServer().getPluginManager().registerEvents(new UpgradeGUI(), this);
-        BossBarBar bossBarBar = new BossBarBar();
+        BossbarManager bossBarBar = new BossbarManager();
         bossBarBar.enableBossBar();
         getCommand("upgrade").setExecutor(new UpgradeGUI());
-        getCommand("broadcast").setExecutor(new Annoucments());
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            Bukkit.getPluginManager().registerEvents(new PAPIHooker(this), this);
-        } else {
-            /*
-             * We inform about the fact that PlaceholderAPI isn't installed and then
-             * disable this plugin to prevent issues.
-             */
-            getLogger().severe("Could not find PlaceholderAPI! This plugin is required.");
-            Bukkit.getPluginManager().disablePlugin(this);
-        }
+        getCommand("broadcast").setExecutor(new AnnouncementCMD());
+
     }
     public void onDisable() {
         // Plugin shutdown logic
@@ -85,11 +75,6 @@ public final class Bot extends JavaPlugin implements Listener{
                 getLogger().info("STAFF " + sender.getName() + " » " + message);
             }
         }
-    }
-    private final JoinCounter joinCounter = new JoinCounter();
-
-    public JoinCounter getJoinCounter() {
-        return joinCounter;
     }
 
 }
