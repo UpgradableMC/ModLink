@@ -20,40 +20,41 @@ import static org.bukkit.Bukkit.getServer;
 
 public class OnPlayerChat implements Listener {
 
-    private final Bot plugin = Bot.getInstance();
+    private final Bot plugin;
+    private StaffChatManager staffChatManager;
+
+    public OnPlayerChat(Bot plugin, StaffChatManager staffChatManager){
+        this.plugin = plugin;
+        this.staffChatManager = staffChatManager;
+    }
 
 
 
-    private StaffChatManager staffChatManager = StaffChatManager.isStaffChatEnabled();
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        Bot bot = Bot.getInstance();
-        Map<Player, Boolean> staffChatStatus = bot.getStaffChatStatus();
+
         Player player = event.getPlayer();
         String message = event.getMessage();
-        if (plugin.isStaffChatEnabled(event.getPlayer()) && event.getPlayer().hasPermission("staffchat.use")) {
-            TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1168051592780587021L);
-            String playername = player.getName();
-            channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
-        }
-        else if (!plugin.isStaffChatEnabled(event.getPlayer()) && !event.getPlayer().hasPermission("staffchat.use")) {
+
+        if(!player.hasPermission("staffchat.use") || !staffChatManager.isStaffChatEnabled(event.getPlayer())){
+
             TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1205269407350263889L);
             String playername = player.getName();
             channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
-        } else if (event.getPlayer().hasPermission("staffchat.use") && message.startsWith("#")) {
+        }
+
+        if (message.startsWith("#")) {
             message = message.substring(1);
-            if (message.startsWith(" ")) {
+            if (message.startsWith(" "))
                 message = message.substring(1);
-            }
-            TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1168051592780587021L);
-            String playername = player.getName();
-            channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
-        } else {
-            TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1205269407350263889L);
-            String playername = player.getName();
-            channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
         }
+
+        TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1168051592780587021L);
+        String playername = player.getName();
+        channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
+
+
     }
 }
 

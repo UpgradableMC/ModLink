@@ -23,7 +23,7 @@ public class DiscordManager {
             jda = JDABuilder.createLight("MTIwNjgzNzMxMjQwMzY3MzA4OA.GfOsQ5.iZ5aiUxj78nPO65_4qDUDyBJB3Nn9D8F4ewmwE")
                     .enableIntents(EnumSet.allOf(GatewayIntent.class))
                     .addEventListeners(new DiscordChatWatcher())
-                    .addEventListeners(new DiscordStaffChatWatcher(staffChatStatus))
+                    .addEventListeners(new DiscordStaffChatWatcher())
                     .build()
                     .awaitReady();
 

@@ -19,21 +19,8 @@ import static org.bukkit.Bukkit.getServer;
 
 public class DiscordStaffChatWatcher extends ListenerAdapter implements Listener {
 
-    private final Bot plugin = Bot.getInstance();
-    private final Map<Player, Boolean> staffChatStatus;
 
-    public DiscordStaffChatWatcher(Map<Player, Boolean> staffChatStatus) {
-        this.staffChatStatus = staffChatStatus;
-    }
-    public boolean isStaffChatEnabled(Player player) {
-        return staffChatStatus.getOrDefault(player, false);
-    }
-    public Player getPlayerByUuid(UUID uuid) {
-        for(Player p : getServer().getOnlinePlayers())
-            if(p.getUniqueId().equals(uuid)){
-                return p;
-            } throw new IllegalArgumentException();
-    }
+
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         MessageChannelUnion channel = event.getChannel();

@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.psycho.Bot;
+import org.psycho.managers.StaffChatManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,19 +18,14 @@ public class OnStaffChatUse implements Listener {
 
 
     private final Bot plugin;
+    private StaffChatManager staffChatManager;
 
-    public OnStaffChatUse(Bot plugin) {
+    public OnStaffChatUse(Bot plugin, StaffChatManager staffChatManager) {
+        this.staffChatManager = staffChatManager;
         this.plugin = plugin;
     }
 
-    private final Map<Player, Boolean> staffChatStatus = new HashMap<>();
 
-    public Map<Player, Boolean> getStaffChatStatus() {
-        return staffChatStatus;
-    }
-    public boolean isStaffChatEnabled(Player player) {
-        return staffChatStatus.getOrDefault(player, false);
-    }
 
     public void sendStaffChatMessage(Player sender, String message) {
         for (Player staff : getServer().getOnlinePlayers()) {
@@ -43,7 +39,7 @@ public class OnStaffChatUse implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
-        if (isStaffChatEnabled(event.getPlayer()) && event.getPlayer().hasPermission("staffchat.use")) {
+        if (staffChatManager.isStaffChatEnabled(event.getPlayer()) && event.getPlayer().hasPermission("staffchat.use")) {
             event.setCancelled(true);
             sendStaffChatMessage(event.getPlayer(), message);
         }

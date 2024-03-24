@@ -14,6 +14,7 @@ import org.psycho.events.minecraft.OnPlayerChat;
 import org.psycho.events.minecraft.OnStaffChatUse;
 import org.psycho.managers.BossbarManager;
 import org.psycho.managers.DiscordManager;
+import org.psycho.managers.StaffChatManager;
 
 
 public final class Bot extends JavaPlugin implements Listener{
@@ -23,19 +24,17 @@ public final class Bot extends JavaPlugin implements Listener{
     private DiscordManager discordManager;
     private static Bot plugin;
 
-    private final Map<Player, Boolean> staffChatStatus = new HashMap<>();
-
-    public Map<Player, Boolean> getStaffChatStatus() {
-        return staffChatStatus;
-    }
+    private StaffChatManager staffChatManager;
 
     public void onEnable() {
 
         plugin = this;
-        this.discordManager = new DiscordManager(staffChatStatus);
-        getServer().getPluginManager().registerEvents(new OnPlayerChat(), this);
-        getCommand("staffchat").setExecutor(new StaffChatCMD(this));
-        getServer().getPluginManager().registerEvents(new OnStaffChatUse(this), this);
+        StaffChatManager staffChatManager = new StaffChatManager(this);
+        this.discordManager = new DiscordManager(staffChatManager.getStaffChatStatus());
+
+        getServer().getPluginManager().registerEvents(new OnPlayerChat(this, staffChatManager), this);
+        getCommand("staffchat").setExecutor(new StaffChatCMD(this, staffChatManager));
+        getServer().getPluginManager().registerEvents(new OnStaffChatUse(this, staffChatManager), this);
         getServer().getPluginManager().registerEvents(new UpgradeGUI(), this);
         BossbarManager bossBarBar = new BossbarManager();
         bossBarBar.enableBossBar();

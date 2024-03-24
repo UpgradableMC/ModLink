@@ -19,13 +19,6 @@ import static org.bukkit.Bukkit.getServer;
 
 public class DiscordChatWatcher extends ListenerAdapter implements Listener {
 
-    private final Bot plugin = Bot.getInstance();
-    public Player getPlayerByUuid(UUID uuid) {
-        for(Player p : getServer().getOnlinePlayers())
-            if(p.getUniqueId().equals(uuid)){
-                return p;
-            } throw new IllegalArgumentException();
-    }
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
@@ -33,14 +26,17 @@ public class DiscordChatWatcher extends ListenerAdapter implements Listener {
 
         // Check if the message is from the desired channel
         if (channel.getId().equals("1205269407350263889")) {
+
             Message message = event.getMessage();
-            String messageraw = message.getContentRaw();
+            String messageRaw = message.getContentRaw();
+
             User user = message.getAuthor();
-            List<Attachment> attachments = message.getAttachments();
             if (user.isBot()) {
                 return;
             }
-            Bukkit.broadcastMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "DISCORD " + ChatColor.AQUA + user.getName() + ChatColor.DARK_GRAY + " » " + ChatColor.GRAY + messageraw);
+
+            // Broadcast discord link to mc chat
+            Bukkit.broadcastMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "DISCORD " + ChatColor.AQUA + user.getName() + ChatColor.DARK_GRAY + " » " + ChatColor.GRAY + messageRaw);
         }
     }
 }

@@ -14,11 +14,9 @@ import org.psycho.managers.BossbarManager;
 public class OnJoinLeave implements Listener {
 
 
-    private final BossbarManager bossBarManager;
 
     private BossBar bossBar;
     public OnJoinLeave(BossbarManager bossBarManager) {
-        this.bossBarManager = bossBarManager;
         bossBar = bossBarManager.getBossBar();
     }
     private final Bot plugin = Bot.getInstance();
