@@ -36,32 +36,9 @@ public class UpgradeGUI implements Listener, CommandExecutor {
             inv.setItem(i, blackPane);
         }
 
-        ItemStack FishingRod1 = new ItemStack(Material.FISHING_ROD, 1);
-        ItemMeta FishingRod1Meta = FishingRod1.getItemMeta();
-        FishingRod1Meta.setDisplayName("§3§lBuy Fishing Rod 1");
-        List<String> FishingRod1Lore = new ArrayList<>();
-        FishingRod1Lore.add("§7Cost: §a$0");
-        FishingRod1Lore.add("§7Description: §aThe first rod. Take good care of it!");
-        FishingRod1Meta.setLore(FishingRod1Lore);
-        FishingRod1.setItemMeta(FishingRod1Meta);
-
-        ItemStack FishingRod2 = new ItemStack(Material.FISHING_ROD, 1);
-        ItemMeta FishingRod2Meta = FishingRod2.getItemMeta();
-        FishingRod1Meta.setDisplayName("§3§lBuy Fishing Rod 2");
-        List<String> FishingRod2Lore = new ArrayList<>();
-        FishingRod2Lore.add("§7Cost: §a$0");
-        FishingRod2Lore.add("§7Description: §aThe second rod.");
-        FishingRod2Meta.setLore(FishingRod2Lore);
-        FishingRod2.setItemMeta(FishingRod2Meta);
-
-        ItemStack FishingRod3 = new ItemStack(Material.FISHING_ROD, 1);
-        ItemMeta FishingRod3Meta = FishingRod3.getItemMeta();
-        FishingRod1Meta.setDisplayName("§3§lBuy Fishing Rod 3");
-        List<String> FishingRod3Lore = new ArrayList<>();
-        FishingRod3Lore.add("§7Cost: §a$0");
-        FishingRod3Lore.add("§7Description: §aThe third rod.");
-        FishingRod3Meta.setLore(FishingRod3Lore);
-        FishingRod3.setItemMeta(FishingRod3Meta);
+        ItemStack FishingRod1 = createFishingRod(1, "1000", "The first rod. Take good care of it!");
+        ItemStack FishingRod2 = createFishingRod(2, "2500", "The second rod.");
+        ItemStack FishingRod3 = createFishingRod(3, "5000", "The third rod.");
 
         ItemStack NextButtonRods = new ItemStack(Material.ARROW, 1);
         ItemMeta NextButtonRodsMeta = NextButtonRods.getItemMeta();
@@ -92,32 +69,9 @@ public class UpgradeGUI implements Listener, CommandExecutor {
             inv.setItem(i, blackPane);
         }
 
-        ItemStack FishingRod4 = new ItemStack(Material.FISHING_ROD, 1);
-        ItemMeta FishingRod4Meta = FishingRod4.getItemMeta();
-        FishingRod4Meta.setDisplayName("§3§lBuy Fishing Rod 4");
-        List<String> FishingRod4Lore = new ArrayList<>();
-        FishingRod4Lore.add("§7Cost: §a$10000");
-        FishingRod4Lore.add("§7Description: §aThe fourth rod.");
-        FishingRod4Meta.setLore(FishingRod4Lore);
-        FishingRod4.setItemMeta(FishingRod4Meta);
-
-        ItemStack FishingRod5 = new ItemStack(Material.FISHING_ROD, 1);
-        ItemMeta FishingRod5Meta = FishingRod5.getItemMeta();
-        FishingRod5Meta.setDisplayName("§3§lBuy Fishing Rod 5");
-        List<String> FishingRod5Lore = new ArrayList<>();
-        FishingRod5Lore.add("§7Cost: §a$20000");
-        FishingRod5Lore.add("§7Description: §aThe fifth rod.");
-        FishingRod5Meta.setLore(FishingRod5Lore);
-        FishingRod5.setItemMeta(FishingRod5Meta);
-
-        ItemStack FishingRod6 = new ItemStack(Material.FISHING_ROD, 1);
-        ItemMeta FishingRod6Meta = FishingRod6.getItemMeta();
-        FishingRod6Meta.setDisplayName("§3§lBuy Fishing Rod 6");
-        List<String> FishingRod6Lore = new ArrayList<>();
-        FishingRod6Lore.add("§7Cost: §a$25000");
-        FishingRod6Lore.add("§7Description: §aThe sixth rod. Last rod achievable in the beta test.");
-        FishingRod6Meta.setLore(FishingRod6Lore);
-        FishingRod6.setItemMeta(FishingRod6Meta);
+        ItemStack FishingRod4 = createFishingRod(4, "10000", "The fourth rod.");
+        ItemStack FishingRod5 = createFishingRod(5, "20000", "The fifth rod.");
+        ItemStack FishingRod6 = createFishingRod(6, "25000", "The sixth rod. Last rod achievable in the beta test.");
 
         ItemStack NextButtonRods = new ItemStack(Material.ARROW, 1);
         ItemMeta NextButtonRodsMeta = NextButtonRods.getItemMeta();
@@ -131,6 +85,18 @@ public class UpgradeGUI implements Listener, CommandExecutor {
         return inv;
     }
 
+
+    private ItemStack createFishingRod(int rodNumber, String cost, String description) {
+        ItemStack fishingRod = new ItemStack(Material.FISHING_ROD, 1);
+        ItemMeta fishingRodMeta = fishingRod.getItemMeta();
+        fishingRodMeta.setDisplayName("§3§lBuy Fishing Rod " + rodNumber);
+        List<String> fishingRodLore = new ArrayList<>();
+        fishingRodLore.add("§7Cost: §a$" + cost);
+        fishingRodLore.add("§7Description: §a" + description);
+        fishingRodMeta.setLore(fishingRodLore);
+        fishingRod.setItemMeta(fishingRodMeta);
+        return fishingRod;
+    }
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         // Check if the clicked inventory is the one you created
@@ -143,6 +109,8 @@ public class UpgradeGUI implements Listener, CommandExecutor {
             if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.ARROW && event.getCurrentItem().getItemMeta().getDisplayName().equals("§3§lNext Page")) {
                 event.setCancelled(true);
                 event.getWhoClicked().openInventory(UpgradePage2());
+            } else {
+                event.setCancelled(true);
             }
         }
         if (event.getView().getTitle().equals("Upgrade Your Rod 2")) {
@@ -154,6 +122,8 @@ public class UpgradeGUI implements Listener, CommandExecutor {
             if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.ARROW && event.getCurrentItem().getItemMeta().getDisplayName().equals("§3§lGo Back")) {
                 event.setCancelled(true);
                 event.getWhoClicked().openInventory(UpgradePage1());
+            } else {
+                event.setCancelled(true);
             }
         }
     }

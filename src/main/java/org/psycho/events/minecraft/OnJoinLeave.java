@@ -9,16 +9,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.psycho.Bot;
-import org.psycho.managers.BossbarManager;
+import org.psycho.managers.BossbarManagerDISABLED;
 
 public class OnJoinLeave implements Listener {
-
-
-
-    private BossBar bossBar;
-    public OnJoinLeave(BossbarManager bossBarManager) {
-        bossBar = bossBarManager.getBossBar();
-    }
     private final Bot plugin = Bot.getInstance();
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -26,7 +19,6 @@ public class OnJoinLeave implements Listener {
         TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1205269407350263889L);
         String playername = player.getName();
         channel.sendMessage(ChatColor.stripColor(playername) + " has joined the server.").queue();
-        bossBar.addPlayer(player);
     }
 
     @EventHandler

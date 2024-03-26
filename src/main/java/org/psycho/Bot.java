@@ -1,18 +1,14 @@
 package org.psycho;
 
 import java.net.http.WebSocket.Listener;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.psycho.FunStuff.*;
 import org.psycho.commands.AnnouncementCMD;
 import org.psycho.commands.StaffChatCMD;
 import org.psycho.events.minecraft.OnPlayerChat;
 import org.psycho.events.minecraft.OnStaffChatUse;
-import org.psycho.managers.BossbarManager;
 import org.psycho.managers.DiscordManager;
 import org.psycho.managers.StaffChatManager;
 
@@ -36,8 +32,6 @@ public final class Bot extends JavaPlugin implements Listener{
         getCommand("staffchat").setExecutor(new StaffChatCMD(this, staffChatManager));
         getServer().getPluginManager().registerEvents(new OnStaffChatUse(this, staffChatManager), this);
         getServer().getPluginManager().registerEvents(new UpgradeGUI(), this);
-        BossbarManager bossBarBar = new BossbarManager();
-        bossBarBar.enableBossBar();
         getCommand("upgrade").setExecutor(new UpgradeGUI());
         getCommand("broadcast").setExecutor(new AnnouncementCMD());
 

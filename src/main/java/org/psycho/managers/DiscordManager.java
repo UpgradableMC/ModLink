@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.entity.Player;
 import org.psycho.Bot;
 import org.psycho.events.discord.DiscordChatWatcher;
+import org.psycho.events.discord.DiscordSlashCommands;
 import org.psycho.events.discord.DiscordStaffChatWatcher;
 
 
@@ -24,6 +25,7 @@ public class DiscordManager {
                     .enableIntents(EnumSet.allOf(GatewayIntent.class))
                     .addEventListeners(new DiscordChatWatcher())
                     .addEventListeners(new DiscordStaffChatWatcher())
+                    .addEventListeners(new DiscordSlashCommands())
                     .build()
                     .awaitReady();
 
