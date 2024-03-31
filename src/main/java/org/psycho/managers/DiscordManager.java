@@ -8,20 +8,42 @@ import org.psycho.Bot;
 import org.psycho.events.discord.DiscordChatWatcher;
 import org.psycho.events.discord.DiscordSlashCommands;
 import org.psycho.events.discord.DiscordStaffChatWatcher;
+import org.yaml.snakeyaml.Yaml;
 
 
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.Properties;
 
 
 public class DiscordManager {
     private final Bot Instance = Bot.getInstance();
              private JDA jda;
     private final Map<Player, Boolean> staffChatStatus;
+
+    public String decode(String encodedToken) {
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedToken);
+        return new String(decodedBytes);
+    }
+
     public DiscordManager(Map<Player, Boolean> staffChatStatus) {
         this.staffChatStatus = staffChatStatus;
         try {
-            jda = JDABuilder.createLight("MTIwNjgzNzMxMjQwMzY3MzA4OA.GfOsQ5.iZ5aiUxj78nPO65_4qDUDyBJB3Nn9D8F4ewmwE")
+            Yaml yaml = new Yaml();
+            Path path = Paths.get("/plugins/ModLink/config.yaml");
+            InputStream in = Files.newInputStream(path);
+            Map<String, Object> yamlProps = yaml.load(in);
+            in.close();
+
+            Map<String, String> botProps = (Map<String, String>) yamlProps.get("bot");
+            String botToken = botProps.get("token");
+
+            jda = JDABuilder.createLight(decode(botToken))
                     .enableIntents(EnumSet.allOf(GatewayIntent.class))
                     .addEventListeners(new DiscordChatWatcher())
                     .addEventListeners(new DiscordStaffChatWatcher())
