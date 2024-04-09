@@ -29,32 +29,32 @@ public class OnPlayerChat implements Listener {
     }
 
 
-
-
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-
         Player player = event.getPlayer();
         String message = event.getMessage();
-
-        if(!player.hasPermission("staffchat.use") || !staffChatManager.isStaffChatEnabled(event.getPlayer())){
-
+        if (staffChatManager.isStaffChatEnabled(event.getPlayer()) && event.getPlayer().hasPermission("staffchat.use")) {
+            TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1168051592780587021L);
+            String playername = player.getName();
+            channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
+        }
+        else if (!staffChatManager.isStaffChatEnabled(event.getPlayer()) && !event.getPlayer().hasPermission("staffchat.use")) {
+            TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1205269407350263889L);
+            String playername = player.getName();
+            channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
+        } else if (event.getPlayer().hasPermission("staffchat.use") && message.startsWith("#")) {
+            message = message.substring(1);
+            if (message.startsWith(" ")) {
+                message = message.substring(1);
+            }
+            TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1168051592780587021L);
+            String playername = player.getName();
+            channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
+        } else {
             TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1205269407350263889L);
             String playername = player.getName();
             channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
         }
-
-        if (message.startsWith("#")) {
-            message = message.substring(1);
-            if (message.startsWith(" "))
-                message = message.substring(1);
-        }
-
-        TextChannel channel = plugin.getDiscordManager().getJDA().getTextChannelById(1168051592780587021L);
-        String playername = player.getName();
-        channel.sendMessage(ChatColor.stripColor(playername) + " » " + message).queue();
-
-
     }
 }
 
