@@ -15,10 +15,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 
 public class DiscordManager {
@@ -35,13 +32,26 @@ public class DiscordManager {
         this.staffChatStatus = staffChatStatus;
         try {
             Yaml yaml = new Yaml();
-            Path path = Paths.get("/plugins/ModLink/config.yaml");
+            Path path = Paths.get("/plugins/ModLink/token.yaml");
+            if (!Files.exists(path)) {
+                Map<String, String> defaultConfig = new HashMap<>();
+                defaultConfig.put("token", "YOUR_BOT_TOKEN");
+                Map<String, Object> botConfig = new HashMap<>();
+                botConfig.put("bot", defaultConfig);
+                yaml.dump(botConfig, Files.newBufferedWriter(path));
+                Instance.getLogger().severe("token.yaml created in /plugins/ModLink/. Please fill in YOUR_BOT_TOKEN!");
+                return;
+            }
             InputStream in = Files.newInputStream(path);
             Map<String, Object> yamlProps = yaml.load(in);
             in.close();
 
             Map<String, String> botProps = (Map<String, String>) yamlProps.get("bot");
             String botToken = botProps.get("token");
+            if ("YOUR_BOT_TOKEN".equals(botToken)) {
+                Instance.getLogger().severe("Please fill in YOUR_BOT_TOKEN in config.yaml!");
+                return;
+            }
 
             jda = JDABuilder.createLight(decode(botToken))
                     .enableIntents(EnumSet.allOf(GatewayIntent.class))
